@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "MixJsonGrpc";
+
+package WeatherForecast;
+
+service WeatherForecasts {
+  rpc GetWeather (google.protobuf.Empty) returns (WeatherReply);
+  rpc GetWeatherStream (google.protobuf.Empty) returns (stream WeatherData);
+  rpc GetTownWeatherStream (stream TownWeatherRequest) returns (stream TownWeatherForecast);
+}
+
+message WeatherReply {
+  repeated WeatherData weatherData = 1;
+}
+
+message WeatherData {
+  google.protobuf.Timestamp dateTimeStamp = 1;
+  int32 temperatureC = 2;
+  int32 temperatureF = 3;
+  string summary = 4;
+}
+
+message TownWeatherRequest {
+  string townName = 1;
+}
+
+message TownWeatherForecast {
+    string townName = 1;
+    WeatherData weatherData = 2;
+}
